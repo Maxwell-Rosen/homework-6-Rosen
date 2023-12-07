@@ -11,8 +11,17 @@ FetchContent_Declare(
   SOURCE_SUBDIR ignore_cmakelists)
 FetchContent_MakeAvailable(eigen)
 
+FetchContent_Declare(
+  pybind11
+  GIT_REPOSITORY https://github.com/pybind/pybind11.git
+  GIT_TAG        v2.11.1
+)
+
+FetchContent_MakeAvailable(pybind11)
+
 if(DEFINED SKBUILD)
-  # ... Fill me in!
+  pybind11_add_module(_core MODULE src/_core.cpp)
+  target_include_directories(_core PRIVATE src "${eigen_SOURCE_DIR}")
 else()
   add_executable(main src/main.cpp src/integrator.hpp)
   target_include_directories(main PRIVATE src "${eigen_SOURCE_DIR}")
